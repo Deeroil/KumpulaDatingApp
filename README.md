@@ -29,9 +29,6 @@ Taulujen luontia varten:
 
 
 
-
-
-
 Alla ajatuksia, keskeneräisiä:
 
 - yksinkertainen UI
@@ -93,13 +90,12 @@ ehkä validoi:
 
 - mitä tapahtuu jos joku poistaa profiilin ja se on swipennyt tai sitä on swipetty?
 
-
-
-MITÄ OIS HYVÄ TEHDÄ NYT:
-
-- taulut
-- taulujen initioiminen salee lmao
-- se että tauluihin voi lisätä asioita wow
+Todo esim:
+- kirjautuminen
+- erilliset käyttäjät
+- bion muokkaaminen
+- useampi "swipe"-taulu
+- taulujen initioiminen 
 - voi klikata match
 	- se tallentuu
 	- jos molemmissa: joku ilmoituss
