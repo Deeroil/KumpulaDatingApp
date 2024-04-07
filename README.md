@@ -51,3 +51,21 @@ Lista pohdituista tauluista:
 Ajatuksia:
 - olisiko mukavampi tietokannan käyttämisen suhteen, jos profiilin ei-kirjautumistiedot olisi eritelty "profiili"-tauluun, jossa mm. nimi, ala, aloitusvuosi, kuva, teksti ja muut tiedot
 
+
+
+CREATE TABLE studyfields (id SERIAL PRIMARY KEY, field TEXT);
+INSERT INTO studyfields (field) VALUES ('TKT');
+INSERT INTO studyfields (field) VALUES ('Matikka');
+
+CREATE TABLE swipes (id SERIAL PRIMARY KEY, swiper REFERENCES users tjsp, swipee REFERENCES users tjsp;
+
+onks se näin?? emt idk??
+INSERT INTO swipes (swiper, swipee) VALUES (tähän id, tähän toinen id?);
+
+CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT, studyfield TEXT references tjsp, aloitusvuosi TEXT optional tjsp, bio TEXT, picture BLOB tjsp optional, telegram TEXT);
+
+ehkä validoi:
+  - onks telegram_nikki tarpeeks pitkä/lyhyt
+  - kans bioon
+
+- mitä tapahtuu jos joku poistaa profiilin ja se on swipennyt tai sitä on swipetty?
