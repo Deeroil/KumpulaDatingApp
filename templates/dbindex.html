@@ -1,7 +1,8 @@
-Viestien määrä: {{ count }}
+Profiles: {{ count }}
 <hr>
-{% for message in messages %}
-{{ message.content }}
+{% for user in users %}
+{{ user.name, user.studyfield, user.bio }}
 <hr>
 {% endfor %}
-<a href="/new">Lähetä viesti</a>
+
+<a href="/new">Add profile</a>

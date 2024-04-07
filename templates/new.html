@@ -1,7 +1,14 @@
 <form action="/send" method="POST">
-  Viesti: <br>
-  <textarea name="content" rows="3" cols="40"></textarea>
+  Name: <br>
+  <textarea name="name" rows="3" cols="40"></textarea>
   <br>
-  <input type="submit" value="Lähetä">
-  </form>
-  
+  <p>Study field:</p>
+  <input type="radio" name="field" value="Computer Science"> Computer Science
+  <input type="radio" name="field" value="Math"> Math
+  <input type="radio" name="field" value="Physics"> Physics
+  <br>
+  Profile: <br>
+  <textarea name="bio" rows="3" cols="40"></textarea>
+  <br>
+  <input type="submit" value="Send">
+</form>

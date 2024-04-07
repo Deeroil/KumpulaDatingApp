@@ -2,6 +2,38 @@
 
 Tietokannat ja web-ohjelmointiprojekti 2024
 
+
+Tämänhetkinen toiminnallisuus:
+
+Voi lisätä uuden käyttäjän.
+Voi valita kolmesta eri alasta yhden.
+Ei validointia syötteelle.
+Ei vielä swipeämis-funktionaalisuutta.
+
+
+
+Taulujen luontia varten:
+
+		CREATE TABLE studyfields (id SERIAL PRIMARY KEY, field TEXT);
+		INSERT INTO studyfields (field) VALUES ('Computer Science');
+		INSERT INTO studyfields (field) VALUES ('Math');
+		INSERT INTO studyfields (field) VALUES ('Physics');
+
+		CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT, studyfield_id INTEGER REFERENCES studyfields, bio TEXT);
+		INSERT INTO users (name, studyfield_id, bio) VALUES ('Maija', '1', 'Moi oon Maija ja olen hauki');
+		INSERT INTO users (name, studyfield_id, bio) VALUES ('Joonas', '3', 'gucci laif and all things topology');
+
+		CREATE TABLE swipes (id SERIAL PRIMARY KEY, swiper_id INTEGER REFERENCES users, swipee_id INTEGER REFERENCES users);
+		
+		INSERT INTO swipes VALUES (1, 2);
+
+
+
+
+
+
+Alla ajatuksia, keskeneräisiä:
+
 - yksinkertainen UI
 
 Käyttäjä:
@@ -51,21 +83,23 @@ Lista pohdituista tauluista:
 Ajatuksia:
 - olisiko mukavampi tietokannan käyttämisen suhteen, jos profiilin ei-kirjautumistiedot olisi eritelty "profiili"-tauluun, jossa mm. nimi, ala, aloitusvuosi, kuva, teksti ja muut tiedot
 
+- muista lisätä UUID:t myöhemmin
+- references vai foreign key?
 
-
-CREATE TABLE studyfields (id SERIAL PRIMARY KEY, field TEXT);
-INSERT INTO studyfields (field) VALUES ('TKT');
-INSERT INTO studyfields (field) VALUES ('Matikka');
-
-CREATE TABLE swipes (id SERIAL PRIMARY KEY, swiper REFERENCES users tjsp, swipee REFERENCES users tjsp;
-
-onks se näin?? emt idk??
-INSERT INTO swipes (swiper, swipee) VALUES (tähän id, tähän toinen id?);
-
-CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT, studyfield TEXT references tjsp, aloitusvuosi TEXT optional tjsp, bio TEXT, picture BLOB tjsp optional, telegram TEXT);
 
 ehkä validoi:
   - onks telegram_nikki tarpeeks pitkä/lyhyt
   - kans bioon
 
 - mitä tapahtuu jos joku poistaa profiilin ja se on swipennyt tai sitä on swipetty?
+
+
+
+MITÄ OIS HYVÄ TEHDÄ NYT:
+
+- taulut
+- taulujen initioiminen salee lmao
+- se että tauluihin voi lisätä asioita wow
+- voi klikata match
+	- se tallentuu
+	- jos molemmissa: joku ilmoituss
