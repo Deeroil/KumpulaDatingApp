@@ -48,7 +48,7 @@ def new():
 
 def get_field_id(fieldname):
     result = db.session.execute(
-        text("SELECT id FROM studyfields WHERE field=:field;"), {"field": fieldname}
+        text("SELECT id FROM studyfields WHERE field=:field"), {"field": fieldname}
     )
     return result.fetchone()[0]
 
