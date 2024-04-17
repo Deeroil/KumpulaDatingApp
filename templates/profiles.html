@@ -1,0 +1,20 @@
+{% if session.username %}
+
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
+
+Profiles: {{ count }}
+<hr>
+{% for user in users %}
+{{ user.name, user.field, user.bio }}
+<hr>
+{% endfor %}
+
+<a href="/new">Add profile</a>
+
+{% else %}
+
+<hr> ei pääsyä profiileihin, et ole kirjautunut!
+<a href="/">Siirry kirjautumaan</a>
+
+{% endif %}
