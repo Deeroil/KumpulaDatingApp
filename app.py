@@ -140,12 +140,14 @@ def login():
         if check_password_hash(hash_value, password):
             # TODO: correct username and password
             print("Jee läpi meni")
+            session["username"] = username
+            return redirect("/profiles")
         else:
             # TODO: invalid password
             print("Error: väärä salasana")
-
-    session["username"] = username
-    return redirect("/profiles")
+            return redirect("/")
+    # TODO: osoita että oli virhe?
+    return redirect("/")
 
 
 @app.route("/logout")
