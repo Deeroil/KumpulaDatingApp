@@ -89,7 +89,7 @@ def sendregister():
 
     # haetaan usernamella ensin
     result = db.session.execute(
-        text("SELECT username FROM users WHERE username=:username;"),
+        text("SELECT username FROM users WHERE username=:username"),
         {"username": username},
     )
     user = result.fetchone()
@@ -116,7 +116,7 @@ def sendregister():
             },
         )
         db.session.commit()
-    return redirect("/new")
+    return redirect("/")
 
 
 @app.route("/register")
