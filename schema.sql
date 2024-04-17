@@ -1,7 +1,7 @@
 
 CREATE TABLE studyfields (
   id SERIAL PRIMARY KEY,
-  field TEXT
+  field TEXT UNIQUE
 );
 
 INSERT INTO studyfields (field) VALUES ('Computer Science');
@@ -10,7 +10,7 @@ INSERT INTO studyfields (field) VALUES ('Physics');
 
 CREATE TABLE orientations (
   id SERIAL PRIMARY KEY,
-  orientation TEXT
+  orientation TEXT UNIQUE
   );
 
 INSERT INTO orientations (orientation) VALUES ('Straight');
@@ -29,7 +29,7 @@ INSERT INTO orientations (orientation) VALUES ('Polyamorous');
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  username TEXT,
+  username TEXT UNIQUE,
   passw TEXT,
   name TEXT,
   studyfield_id INTEGER REFERENCES studyfields,
