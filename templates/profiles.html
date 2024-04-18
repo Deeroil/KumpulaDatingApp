@@ -3,12 +3,17 @@
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Kirjaudu ulos</a>
 
+
 Profiles: {{ count }}
+<form action="/sendlikes" method="POST">
 <hr>
 {% for user in users %}
 {{ user.name, user.field, user.bio }}
+<input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"/>
 <hr>
 {% endfor %}
+<input type="submit" value="Send">
+</form>
 
 <a href="/new">Add profile</a>
 

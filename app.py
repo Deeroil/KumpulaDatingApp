@@ -31,14 +31,44 @@ def index():
 # TODO: älä näytä omaa profiilia listauksessa
 @app.route("/profiles")
 def profiles():
-    # result = db.session.execute(text("SELECT name, studyfield_id, bio FROM users"))
-    command = "SELECT name, studyfields.field, bio FROM users LEFT JOIN studyfields ON studyfields.id = users.studyfield_id"
-    # command = "SELECT username, name, studyfields.field, bio FROM users LEFT JOIN studyfields ON studyfields.id = users.studyfield_id WHERE username !=:username"
-
-    # result = db.session.execute(text(command), {"username": session.username})
+    command = "SELECT username, name, studyfields.field, bio FROM users LEFT JOIN studyfields ON studyfields.id = users.studyfield_id"
     result = db.session.execute(text(command))
     users = result.fetchall()
     return render_template("profiles.html", count=len(users), users=users)
+
+
+@app.route("/sendlikes", methods=["POST"])
+def sendlikes():
+
+    command = text("SELECT username, id FROM users")
+    result = db.session.execute(command)
+    users = result.fetchall()
+
+    liked = []
+    for user in users:
+        u = request.form.get(user.username)
+        if u:
+            liked.append(user.id)
+
+    # print("USERNAMES LIKED:", liked)
+
+    username = session["username"]
+    command = text("SELECT id FROM users WHERE username=:username")
+    result = db.session.execute(command, {"username": username})
+    user_id = result.fetchone()[0]
+
+    if len(liked) > 0:
+        for likee_id in liked:
+            command = text(
+                "INSERT INTO likes (liker_id, likee_id) VALUES (:liker_id, :likee_id)"
+            )
+            result = db.session.execute(
+                command, {"liker_id": user_id, "likee_id": likee_id}
+            )
+
+    db.session.commit()  # tää tänne vai tonne sisälle?
+
+    return redirect("/profiles")
 
 
 @app.route("/new")
