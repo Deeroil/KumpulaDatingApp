@@ -3,12 +3,7 @@
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Kirjaudu ulos</a>
 
-Profiles: {{ count }}
-<hr>
-{% for user in users %}
-{{ user.name, user.field, user.bio }}
-<hr>
-{% endfor %}
+<a href="/profiles">Katso profiilit</a>
 
 <a href="/new">Add profile</a>
 
