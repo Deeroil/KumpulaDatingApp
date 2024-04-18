@@ -7,10 +7,10 @@ Tietokannat ja web-ohjelmointiprojekti 2024
 * Voi rekisteröityä.
 * Voi kirjautua.
 * Voi kirjautuneena katsoa listaa muista käyttäjistä.
+* Voi klikata checkboxia ja lähettää lomakkeen, jolla tykkäys lähetetään tietokantaan. Tämä ei tosin vielä vaikuta mihinkään.
 
 #### Mitä esim puuttuu:
 * Ei validointia syötteelle.
-* Ei vielä tykkäystoiminnallisuutta.
 * Ei vielä profiilin muokkaamista jne.
 
 
@@ -34,10 +34,9 @@ Jos haluat poistaa sovelluksen taulut, käytä `psql > drop.sql`
 - UUID:t
 
 Käyttäjä:
-- voi selata muita käyttäjiä:
+- voi selata muita käyttäjiä (toteutettu)
 	- kaikkia käyttäjiä? vai rajoitettu omien ominaisuuksien tai haettavan seuran mukaan?
-- voi osoittaa kiinnostuksensa (klikata checkboxin tmv)
-- tulee ilmoitus jos molemmat ovat valinneet toisensa
+- ilmoitus jos molemmat ovat tykänneet toisensa
 
 Ehkä:
 - tilin poistaminen
