@@ -15,9 +15,7 @@ db = SQLAlchemy(app)
 
 
 ### TODO:
-#       - like function/checkbox tjsp. form :D
-#       - sit kans cancel option
-#       - kirjautumistoiminto           !!!
+#       - cancel like option? or not
 #       - profiilin muokkaaminen
 #       - handle tyhjät/jne/validoi/jne form jne
 #       - hakuominaisuutta?
@@ -90,13 +88,13 @@ def send():
     bio = request.form["bio"]
 
     # haetaan id ensin
-    id = get_field_id(field)
+    studyfield_id = get_field_id(field)
 
     sql = text(
         "INSERT INTO users (name, studyfield_id, bio) VALUES (:name, :studyfield_id, :bio)"
     )
 
-    db.session.execute(sql, {"name": name, "studyfield_id": id, "bio": bio})
+    db.session.execute(sql, {"name": name, "studyfield_id": studyfield_id, "bio": bio})
 
     db.session.commit()
     return redirect("/profiles")
@@ -168,8 +166,6 @@ def login():
     else:
         hash_value = user.passw
         if check_password_hash(hash_value, password):
-            # TODO: correct username and password
-            print("Jee läpi meni")
             session["username"] = username
             return redirect("/profiles")
         else:
