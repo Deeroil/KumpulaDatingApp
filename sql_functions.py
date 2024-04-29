@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 
 
 ## user functions
-def create_user(username, passw_hashed, name, id, bio):
+def create_user(username, passw_hashed, name, field_id, bio):
     sql = text(
         """
             INSERT INTO users (username, passw, name, studyfield_id, bio)
@@ -17,7 +17,7 @@ def create_user(username, passw_hashed, name, id, bio):
             "username": username,
             "passw": passw_hashed,
             "name": name,
-            "studyfield_id": id,
+            "studyfield_id": field_id,
             "bio": bio,
         },
     )

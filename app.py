@@ -8,7 +8,6 @@ import routes
 
 ### TODO:
 #       - näytä keitä oot tykännyt
-#       - pilko useampaan tiedostoon
 #       - näytä keiden kanssa match
 #       - cancel like option? or not
 #       - oman profiilin muokkaaminen
