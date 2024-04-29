@@ -15,10 +15,30 @@ db = SQLAlchemy(app)
 
 
 ### TODO:
+#       - näytä keitä oot tykännyt
+#       - pilko useampaan tiedostoon
+#       - näytä keiden kanssa match
 #       - cancel like option? or not
-#       - profiilin muokkaaminen
+#       - oman profiilin muokkaaminen
 #       - handle tyhjät/jne/validoi/jne form jne
 #       - hakuominaisuutta?
+#       - form CSRF fix:
+#               <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
+def find_session_id(username):
+    command = text("SELECT id FROM users WHERE username=:username")
+    result = db.session.execute(command, {"username": username})
+    return result.fetchone()[0]
+
+def find_userdata():
+    command = text(
+        """SELECT username, name, studyfields.field, bio
+            FROM users
+            LEFT JOIN studyfields ON studyfields.id = users.studyfield_id
+        """)
+    result = db.session.execute(command)
+    users = result.fetchall()
+    return users
 
 
 @app.route("/")
@@ -26,43 +46,42 @@ def index():
     return render_template("index.html")
 
 
-# TODO: älä näytä omaa profiilia listauksessa
 @app.route("/profiles")
 def profiles():
-    command = "SELECT username, name, studyfields.field, bio FROM users LEFT JOIN studyfields ON studyfields.id = users.studyfield_id"
-    result = db.session.execute(text(command))
-    users = result.fetchall()
+    users = find_userdata()
     return render_template("profiles.html", count=len(users), users=users)
+
+
+def find_username_id():
+    command = text("SELECT username, id FROM users")
+    result = db.session.execute(command)
+    return result.fetchall()
+
+
+def insert_like(liker_id, likee_id):
+        command = text(
+            "INSERT INTO likes (liker_id, likee_id) VALUES (:liker_id, :likee_id)"
+        )
+        result = db.session.execute(
+            command, {"liker_id": liker_id, "likee_id": likee_id}
+        )
 
 
 @app.route("/sendlikes", methods=["POST"])
 def sendlikes():
-
-    command = text("SELECT username, id FROM users")
-    result = db.session.execute(command)
-    users = result.fetchall()
-
+    users = find_username_id()
     liked = []
     for user in users:
         u = request.form.get(user.username)
         if u:
             liked.append(user.id)
 
-    # print("USERNAMES LIKED:", liked)
-
     username = session["username"]
-    command = text("SELECT id FROM users WHERE username=:username")
-    result = db.session.execute(command, {"username": username})
-    user_id = result.fetchone()[0]
+    user_id = find_session_id(username)
 
     if len(liked) > 0:
         for likee_id in liked:
-            command = text(
-                "INSERT INTO likes (liker_id, likee_id) VALUES (:liker_id, :likee_id)"
-            )
-            result = db.session.execute(
-                command, {"liker_id": user_id, "likee_id": likee_id}
-            )
+            insert_like(user_id, likee_id)
 
     db.session.commit()  # tää tänne vai tonne sisälle?
 
