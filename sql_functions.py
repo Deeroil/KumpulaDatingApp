@@ -2,7 +2,7 @@ from db import db
 from sqlalchemy.sql import text
 
 
-## user functions
+# user functions
 def create_user(username, passw_hashed, name, field_id, bio):
     sql = text(
         """
@@ -70,8 +70,8 @@ def create_new_user(name, studyfield_id, bio):
     db.session.execute(sql, {"name": name, "studyfield_id": studyfield_id, "bio": bio})
     db.session.commit()
 
-## other functions
 
+# other functions
 def insert_like(liker_id, likee_id):
     command = text(
         "INSERT INTO likes (liker_id, likee_id) VALUES (:liker_id, :likee_id)"

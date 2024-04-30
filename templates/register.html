@@ -1,10 +1,12 @@
-<form action="/sendregister" method="POST">
+<a href="/">Etusivu</a>
+<br>
+<form action="/sendregister" method="POST" onsubmit="return check(this)">
   Username: <br>
-  <input type="text" name="username"></p>
+  <input type="text" name="username" required></p>
   Password: <br>
-  <input type="password" name="passw"></p>
+  <input type="password" name="passw" required></p>
   Name: <br>
-  <input type="text" name="name"></p>
+  <input type="text" name="name" required></p>
   <p>Study field:</p>
   <input type="radio" name="field" value="Computer Science"> Computer Science
   <input type="radio" name="field" value="Math"> Math
@@ -12,7 +14,31 @@
   <br>
   <br>
   Profile: <br>
-  <textarea name="bio" rows="3" cols="40"></textarea>
+  <textarea name="bio" rows="3" cols="40" required></textarea>
   <br>
   <input type="submit" value="Send">
 </form>
+
+<script>
+  // TODO: radio validation?
+  function check(form) {
+    if (form.username.value.length < 3) {
+      alert("Käyttäjänimi liian lyhyt");
+      return false;
+    }
+
+    if (form.passw.value.length < 5) {
+      alert("Salasana liian lyhyt");
+      return false;
+    }
+    if (form.name.value.length < 2) {
+      alert("Nimi liian lyhyt");
+      return false;
+    }
+    if (form.bio.value.length > 50) {
+      alert("Bio liian pitkä");
+      return false;
+    }
+    return true;
+  }
+</script>

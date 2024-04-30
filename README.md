@@ -8,10 +8,12 @@ Tietokannat ja web-ohjelmointiprojekti 2024
 * Voi kirjautua.
 * Voi kirjautuneena katsoa listaa muista käyttäjistä.
 * Voi klikata checkboxia ja lähettää lomakkeen, jolla tykkäys lähetetään tietokantaan. Tämä ei tosin vielä vaikuta mihinkään.
+* Jotain validointia toteutettu, ja virheviestejä
 
 #### Mitä esim puuttuu:
-* Ei validointia syötteelle.
-* Ei vielä profiilin muokkaamista jne.
+* Ei vielä profiilin muokkaamista
+* Validointi myös backendin puolella
+* Matchien näkyminen
 
 
 ### Käyttöohje:
@@ -30,7 +32,6 @@ Jos haluat poistaa sovelluksen taulut, käytä `psql > drop.sql`
 
 #### TODO:
 - yksinkertainen UI
-- tekstikenttien validointi jne
 - UUID:t
 
 Käyttäjä:
@@ -52,8 +53,3 @@ Lista pohdituista tauluista:
 	* cuddling, romantic, sexual, friendship? entä opiskeluseura?
 
 - kuvat: tietokanta niille, blobeina säilöttynä tai path. ehkä vain yksi kuva per henkilö, onko optional?
-
-
-Ajatuksia:
-- olisiko mukavampi tietokannan käyttämisen suhteen, jos profiilin ei-kirjautumistiedot olisi eritelty "profiili"-tauluun, jossa mm. nimi, ala, aloitusvuosi, kuva, teksti ja muut tiedot
-- mitä tapahtuu jos joku poistaa profiilin ja on "matchatty"?

@@ -61,6 +61,7 @@ def send():
 def sendregister():
     # TODO:
     # - käyttäjänimen validointi (pituus jne)
+    # -radio validation?
     # - salasanan valdointi
     # - errors
     # - kamalaa joutua täyttää uudestaan jos ei saa
@@ -72,12 +73,13 @@ def sendregister():
     field = request.form["field"]
     bio = request.form["bio"]
 
+    print("FIELD", field)
     # haetaan usernamella ensin
     user = fun.find_username(username)
 
     if user:
-        # TODO: Error1!
         print("error: user exists")
+        return render_template("error.html", message="Käyttäjätunnus on jo olemassa")
     else:
         passw_hashed = generate_password_hash(passw)
         field_id = fun.get_field_id(field)
@@ -99,19 +101,16 @@ def login():
     user = fun.find_id_passw(username)
 
     if not user:
-        # TODO: invalid username
         print("Error: invalid username")
+        return render_template("error.html", message="Käyttäjätunnusta ei olemassa")
     else:
         hash_value = user.passw
         if check_password_hash(hash_value, password):
             session["username"] = username
             return redirect("/profiles")
         else:
-            # TODO: invalid password
             print("Error: väärä salasana")
-            return redirect("/")
-    # TODO: osoita että oli virhe?
-    return redirect("/")
+            return render_template("error.html", message="Väärä salasana")
 
 
 @app.route("/logout")
