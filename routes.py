@@ -14,7 +14,12 @@ def index():
 @app.route("/profiles")
 def profiles():
     users = fun.find_userdata()
-    return render_template("profiles.html", count=len(users), users=users)
+
+    username = session["username"]
+    user_id = fun.find_session_id(username)
+    matches = fun.find_matches(user_id)
+
+    return render_template("profiles.html", count=len(users), users=users, matches=matches)
 
 
 @app.route("/sendlikes", methods=["POST"])

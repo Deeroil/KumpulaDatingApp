@@ -80,6 +80,24 @@ def insert_like(liker_id, likee_id):
     db.session.commit()
 
 
+# TODO: korjaa tää
+# palauttaa nyt listan, esim [(2, 1, 1, 2), (2, 5, 5, 2), (2, 1, 1, 2), (2, 1, 1, 2)]... toistoa
+def find_matches(user_id):
+    command = text(
+        """SELECT A.liker_id, A.likee_id, B.liker_id, B.likee_id
+                    FROM likes as A
+                    LEFT JOIN likes as B ON A.liker_id = B.likee_id
+                    WHERE A.likee_id =  B.liker_id
+                            AND A.likee_id != B.likee_id
+                            AND A.liker_id = :user_id
+                """
+    )
+    result = db.session.execute(command, {"user_id": user_id})
+    users = result.fetchall()
+    print("WOO", users)
+    return users
+
+
 def get_field_id(fieldname):
     result = db.session.execute(
         text("SELECT id FROM studyfields WHERE field=:field"), {"field": fieldname}
