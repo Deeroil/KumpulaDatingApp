@@ -1,42 +1,41 @@
 <a href="/">Etusivu</a>
 <br>
 <form action="/sendregister" method="POST" onsubmit="return check(this)">
-  Username: <br>
+  Username (3-25 characters): <br>
   <input type="text" name="username" required></p>
-  Password: <br>
+  Password (12-35 char): <br>
   <input type="password" name="passw" required></p>
-  Name: <br>
+  Name (2-15 char): <br>
   <input type="text" name="name" required></p>
   <p>Study field:</p>
-  <input type="radio" name="field" value="Computer Science"> Computer Science
+  <input type="radio" name="field" value="Computer Science" checked="checked"> Computer Science
   <input type="radio" name="field" value="Math"> Math
   <input type="radio" name="field" value="Physics"> Physics
   <br>
   <br>
-  Profile: <br>
+  Profile (3-200 char): <br>
   <textarea name="bio" rows="3" cols="40" required></textarea>
   <br>
   <input type="submit" value="Send">
 </form>
 
 <script>
-  // TODO: radio validation?
   function check(form) {
-    if (form.username.value.length < 3) {
-      alert("Käyttäjänimi liian lyhyt");
+    if (form.username.value.length < 3 || form.username.value.length > 25) {
+      alert("Käyttäjänimen tulee olla 3-25 merkkiä pitkä");
       return false;
     }
 
-    if (form.passw.value.length < 5) {
-      alert("Salasana liian lyhyt");
+    if (form.passw.value.length < 12 || form.passw.value.length > 35) {
+      alert("Salasanan tulee olla 12-35 merkkiä pitkä");
       return false;
     }
-    if (form.name.value.length < 2) {
-      alert("Nimi liian lyhyt");
+    if (form.name.value.length < 1 || form.name.value.length > 15) {
+      alert("Nimen tulee olla 2-15 merkkiä pitkä");
       return false;
     }
-    if (form.bio.value.length > 50) {
-      alert("Bio liian pitkä");
+    if (form.bio.value.length < 3 || form.bio.value.length > 200) {
+      alert("Profiilitekstin tulee olla 3-200 merkkiä pitkä");
       return false;
     }
     return true;

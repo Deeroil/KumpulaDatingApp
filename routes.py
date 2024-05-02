@@ -1,8 +1,8 @@
-
 from flask import redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import sql_functions as fun
 from app import app
+
 
 @app.route("/")
 def index():
@@ -73,6 +73,30 @@ def sendregister():
     name = request.form["name"]
     field = request.form["field"]
     bio = request.form["bio"]
+
+    if not username or not passw or not name or not field:
+        return render_template("error.html", message="Tietoja puuttuu")
+
+    # TODO: näinkö?
+    if not 2 < len(username) < 26:
+        return render_template(
+            "error.html", message="Käyttäjänimen tulee olla 3-25 merkkiä pitkä"
+        )
+
+    if not 11 < len(passw) < 36:
+        return render_template(
+            "error.html", message="Salasanan tulee olla 12-35 merkkiä pitkä"
+        )
+
+    if not 1 < len(name) < 16:
+        return render_template(
+            "error.html", message="Nimen tulee olla 2-15 merkkiä pitkä"
+        )
+
+    if not 2 < len(name) < 201:
+        return render_template(
+            "error.html", message="Profiilitekstin tulee olla 3-200 merkkiä pitkä"
+        )
 
     print("FIELD", field)
     # haetaan usernamella ensin
