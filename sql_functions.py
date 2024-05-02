@@ -21,6 +21,7 @@ def create_user(username, passw_hashed, name, field_id, bio):
             "bio": bio,
         },
     )
+    db.session.commit()
 
 
 def find_username(username):

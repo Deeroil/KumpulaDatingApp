@@ -3,8 +3,6 @@ from flask import redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import sql_functions as fun
 from app import app
-from db import db
-
 
 @app.route("/")
 def index():
@@ -37,8 +35,6 @@ def sendlikes():
     if len(liked) > 0:
         for likee_id in liked:
             fun.insert_like(user_id, likee_id)
-
-    db.session.commit()  # tää tänne insert_like:n sisälle?
 
     return redirect("/profiles")
 
@@ -89,7 +85,6 @@ def sendregister():
         passw_hashed = generate_password_hash(passw)
         field_id = fun.get_field_id(field)
         fun.create_user(username, passw_hashed, name, field_id, bio)
-        db.session.commit()
 
     return redirect("/")
 
