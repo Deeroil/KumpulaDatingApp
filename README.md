@@ -8,11 +8,10 @@ Tietokannat ja web-ohjelmointiprojekti 2024
 * Voi kirjautua.
 * Voi kirjautuneena katsoa listaa muista käyttäjistä.
 * Voi klikata checkboxia ja lähettää lomakkeen, jolla tykkäys lähetetään tietokantaan. Tämä ei tosin vielä vaikuta mihinkään.
-* Jotain validointia toteutettu, ja virheviestejä
+* JValidointia toteutettu, ja virheviestejä
+* Profiilia voi muokata (nimi, profiiliteksti)
 
 #### Mitä esim puuttuu:
-* Ei vielä profiilin muokkaamista
-* Validointi myös backendin puolella
 * Matchien näkyminen
 
 
@@ -22,11 +21,12 @@ Luo juureen tiedosto `.env` ja aseta sinne `DATABASE_URL` sekä `SECRET_KEY`
 
 Lataa riippuvuudet `pip install -r requirements.txt`
 
-Luo tietokantataulut `psql > schema.sql`
+Luo tietokantataulut `psql < schema.sql`
 
-Jos haluat poistaa sovelluksen taulut, käytä `psql > drop.sql`
+Jos haluat poistaa sovelluksen taulut, käytä `psql < drop.sql`
 
-`psql > userdata.sql` sisältää useita valmiita profiileja, joiden kaikkien salasana on `salasana`.
+`psql < userdata.sql` sisältää useita valmiita profiileja, joiden kaikkien salasana on `salasana`.
+(huom: sovelluksen sisällä tehdyissä profiileissa kyseinen salasana olisi liian lyhyt)
 
 
 
