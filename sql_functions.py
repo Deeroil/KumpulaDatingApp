@@ -1,6 +1,7 @@
 from db import db
 from sqlalchemy.sql import text
 
+# TODO: rename näitä selkeämmiksi
 
 # user functions
 def create_user(username, passw_hashed, name, field_id, bio):
@@ -62,13 +63,12 @@ def find_userdata():
     return users
 
 
-# edit this to edit user
-def create_new_user(name, studyfield_id, bio):
+def edit_user(user_id, name, bio):
+    # UPDATE Tuotteet SET hinta=6 WHERE id=2
     sql = text(
-        "INSERT INTO users (name, studyfield_id, bio) VALUES (:name, :studyfield_id, :bio)"
+        "UPDATE users SET name=:name, bio=:bio WHERE id=:user_id"
     )
-
-    db.session.execute(sql, {"name": name, "studyfield_id": studyfield_id, "bio": bio})
+    db.session.execute(sql, {"name": name, "bio": bio, "user_id": user_id})
     db.session.commit()
 
 

@@ -1,6 +1,7 @@
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 import sql_functions as fun
+import secrets
 from app import app
 
 
@@ -43,28 +44,31 @@ def sendlikes():
 def new():
     return render_template("new.html")
 
+# TODO: show previous name and bio?
+@app.route("/edit")
+def edit():
+    return render_template("edit.html")
 
-# TODO: edit this to be edit profile
-@app.route("/send", methods=["POST"])
-def send():
+# TODO: show previous name and bio?
+@app.route("/editprofile", methods=["POST"])
+def editprofile():
     name = request.form["name"]
-    field = request.form["field"]
     bio = request.form["bio"]
 
-    # haetaan id ensin
-    studyfield_id = fun.get_field_id(field)
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
 
-    fun.create_new_user(name, studyfield_id, bio)
+    user_id = fun.find_session_id(session["username"])
+    fun.edit_user(user_id, name, bio)
     return redirect("/profiles")
 
 
+# TODO: check radiobox does it work without-- no.
 @app.route("/sendregister", methods=["POST"])
 def sendregister():
     # TODO:
-    # - käyttäjänimen validointi (pituus jne)
     # -radio validation?
     # - salasanan valdointi
-    # - errors
     # - kamalaa joutua täyttää uudestaan jos ei saa
     #           luotua, mutta tehdään nyt näin
 
@@ -131,6 +135,7 @@ def login():
         hash_value = user.passw
         if check_password_hash(hash_value, password):
             session["username"] = username
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/profiles")
         else:
             print("Error: väärä salasana")

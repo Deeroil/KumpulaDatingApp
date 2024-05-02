@@ -1,0 +1,28 @@
+<a href="/">Etusivu</a>
+<br>
+<div>
+  Edit your profile:
+</div>
+<form action="/editprofile" method="POST" onsubmit="return check(this)">
+  Name (2-15 char): <br>
+  <input type="text" name="name" required></p>
+  Profile (3-200 char): <br>
+  <textarea name="bio" rows="3" cols="40" required></textarea>
+  <br>
+  <input type="submit" value="Send">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+
+<script>
+  function check(form) {
+    if (form.name.value.length < 2 || form.name.value.length > 15) {
+      alert("Nimen tulee olla 2-15 merkkiä pitkä");
+      return false;
+    }
+    if (form.bio.value.length < 3 || form.bio.value.length > 200) {
+      alert("Profiilitekstin tulee olla 3-200 merkkiä pitkä");
+      return false;
+    }
+    return true;
+  }
+</script>
