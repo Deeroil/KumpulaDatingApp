@@ -62,12 +62,21 @@ def find_userdata():
     users = result.fetchall()
     return users
 
+def find_userdata_no_curr(username):
+    command = text(
+        """SELECT username, name, studyfields.field, bio
+            FROM users
+            LEFT JOIN studyfields ON studyfields.id = users.studyfield_id
+            WHERE username != :username
+        """
+    )
+    result = db.session.execute(command, {"username": username})
+    users = result.fetchall()
+    return users
+
 
 def edit_user(user_id, name, bio):
-    # UPDATE Tuotteet SET hinta=6 WHERE id=2
-    sql = text(
-        "UPDATE users SET name=:name, bio=:bio WHERE id=:user_id"
-    )
+    sql = text("UPDATE users SET name=:name, bio=:bio WHERE id=:user_id")
     db.session.execute(sql, {"name": name, "bio": bio, "user_id": user_id})
     db.session.commit()
 

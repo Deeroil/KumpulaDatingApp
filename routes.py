@@ -12,9 +12,8 @@ def index():
 
 @app.route("/profiles")
 def profiles():
-    users = fun.find_userdata()
-
     username = session["username"]
+    users = fun.find_userdata_no_curr(username)
     user_id = fun.find_session_id(username)
     matches = fun.find_matches(user_id)
 
