@@ -1,11 +1,9 @@
 {% if session.username %}
-
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Kirjaudu ulos</a>
-
 <a href="/profiles">Katso profiilit</a>
-
+<a href="/matches">Katso matchit</a>
 <a href="/edit">Edit profile</a>
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
 
 {% else %}
 <a href="/register">Rekisteröidy</a>
