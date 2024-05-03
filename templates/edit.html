@@ -1,13 +1,15 @@
-<a href="/">Etusivu</a>
 {% if session.username %}
+<a href="/">Etusivu</a>
+<a href="/logout">Kirjaudu ulos</a>
+<a href="/profiles">Profiilit</a>
 
 <p>Olet kirjautunut käyttäjällä {{ session.username }}</p>
-<a href="/logout">Kirjaudu ulos</a>
 
 <br>
 <div>
   Edit your profile:
 </div>
+<br>
 <form action="/editprofile" method="POST" onsubmit="return check(this)">
   Name (2-15 char): <br>
   <input type="text" name="name" value="{{ user.name }}" required></p>

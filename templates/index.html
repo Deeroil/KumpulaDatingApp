@@ -8,6 +8,8 @@
 <a href="/edit">Edit profile</a>
 
 {% else %}
+<a href="/register">Rekisteröidy</a>
+
 <form action="/login" method="POST">
 <p>Tunnus:<br>
 <input type="text" name="username"></p>
@@ -15,6 +17,5 @@
 <input type="password" name="password"></p>
 <input type="submit" value="Kirjaudu">
 </form>
-<a href="/register">Rekisteröidy</a>
 
 {% endif %}

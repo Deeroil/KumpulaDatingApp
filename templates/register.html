@@ -1,5 +1,19 @@
-<a href="/">Etusivu</a>
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
+
+<a href="/profiles">Katso profiilit</a>
+
+<a href="/edit">Edit profile</a>
+
+<p>Luodaksesi uuden käyttäjän, kirjaudu ensin ulos</p>
+
+{% else %}
+
+<a href="/">Etusivu/Kirjaudu</a>
 <br>
+<p> Register a new account </p>
+
 <form action="/sendregister" method="POST" onsubmit="return check(this)">
   Username (3-25 characters): <br>
   <input type="text" name="username" required></p>
@@ -41,3 +55,5 @@
     return true;
   }
 </script>
+
+{% endif %}
