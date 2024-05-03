@@ -15,7 +15,7 @@ def profiles():
     username = session["username"]
     users = fun.find_userdata_no_curr(username)
     user_id = fun.find_session_id(username)
-    matches = fun.find_matches(user_id)
+    matches = fun.find_match_usernames(user_id)
 
     return render_template("profiles.html", count=len(users), users=users, matches=matches)
 

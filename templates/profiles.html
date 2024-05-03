@@ -10,6 +10,12 @@ Profiles: {{ count }}
 {% for user in users %}
 {{ user.name, user.field, user.bio }}
 <input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"/>
+
+{% for match in matches %}
+{% if match.username == user.username%}
+!! woo match !!
+{% endif %}
+{% endfor %}
 <hr>
 {% endfor %}
 <input type="submit" value="Send">
