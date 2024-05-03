@@ -45,6 +45,11 @@ def find_id_passw(username):
     result = db.session.execute(sql, {"username": username})
     return result.fetchone()
 
+def find_name_bio(username):
+    sql = text("SELECT name, bio FROM users WHERE username=:username")
+    result = db.session.execute(sql, {"username": username})
+    return result.fetchone()
+
 
 def find_session_id(username):
     command = text("SELECT id FROM users WHERE username=:username")

@@ -1,13 +1,18 @@
 <a href="/">Etusivu</a>
+{% if session.username %}
+
+<p>Olet kirjautunut käyttäjällä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
+
 <br>
 <div>
   Edit your profile:
 </div>
 <form action="/editprofile" method="POST" onsubmit="return check(this)">
   Name (2-15 char): <br>
-  <input type="text" name="name" required></p>
+  <input type="text" name="name" value="{{ user.name }}" required></p>
   Profile (3-200 char): <br>
-  <textarea name="bio" rows="3" cols="40" required></textarea>
+  <textarea name="bio" rows="3" cols="40" required>{{ user.bio }}</textarea>
   <br>
   <input type="submit" value="Send">
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -26,3 +31,11 @@
     return true;
   }
 </script>
+
+{% else %}
+
+<hr> ei pääsyä sivulle, et ole kirjautunut!
+<a href="/">Siirry kirjautumaan</a>
+<a href="/register">Rekisteröidy</a>
+
+{% endif %}

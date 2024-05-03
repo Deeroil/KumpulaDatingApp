@@ -39,14 +39,14 @@ def sendlikes():
     return redirect("/profiles")
 
 
-@app.route("/new")
-def new():
-    return render_template("new.html")
-
-# TODO: show previous name and bio?
 @app.route("/edit")
 def edit():
-    return render_template("edit.html")
+    if "username" in session:
+        username = session["username"]
+        user = fun.find_name_bio(username)
+        return render_template("edit.html", user=user)
+    else:
+        return render_template("edit.html")
 
 # TODO: show previous name and bio?
 @app.route("/editprofile", methods=["POST"])
