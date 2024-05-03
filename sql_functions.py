@@ -97,6 +97,21 @@ def insert_like(liker_id, likee_id):
     db.session.commit()
 
 
+def find_match_profiles(user_id):
+    command = text(
+        """SELECT name, studyfields.field, bio FROM likes as A
+            LEFT JOIN users ON users.id = A.likee_id
+            LEFT JOIN studyfields ON studyfields.id = users.studyfield_id
+            LEFT JOIN likes as B ON A.liker_id = B.likee_id
+            AND A.likee_id =  B.liker_id
+                    AND A.likee_id != B.likee_id
+                    AND A.liker_id = :user_id
+            GROUP BY studyfields.field, name, bio;
+        """
+    )
+    result = db.session.execute(command, {"user_id": user_id})
+    return result.fetchall()
+
 def find_match_usernames(user_id):
     command = text(
         """SELECT username FROM likes as A

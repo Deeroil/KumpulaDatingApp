@@ -41,6 +41,18 @@ def sendlikes():
     return redirect("/profiles")
 
 
+@app.route("/matches")
+def matches():
+    if "username" in session:
+        username = session["username"]
+        user_id = fun.find_session_id(username)
+        matchlist = fun.find_match_profiles(user_id)
+
+        return render_template("matches.html", count=len(matchlist), matches=matchlist)
+    else:
+        return render_template("matches.html")
+
+
 @app.route("/edit")
 def edit():
     if "username" in session:

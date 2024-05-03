@@ -1,0 +1,22 @@
+{% if session.username %}
+<a href="/">Etusivu</a>
+<a href="/logout">Kirjaudu ulos</a>
+<a href="/edit">Edit profile</a>
+<p>Olet kirjautunut käyttäjällä {{ session.username }}</p>
+
+Matches: {{ count }}
+<hr>
+{% for match in matches %}
+{{ match.name, match.field, match.bio }}
+<hr>
+{% endfor %}
+
+<a href="/edit">Edit profile</a>
+
+{% else %}
+
+<hr> ei pääsyä matcheihin, et ole kirjautunut!
+<a href="/">Siirry kirjautumaan</a>
+<a href="/register">Rekisteröidy</a>
+
+{% endif %}
