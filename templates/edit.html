@@ -24,19 +24,13 @@
 <br>
 Edit your orientations:
 <form action="/editorientations" method="POST">
-
-  <input type="checkbox" name="Gay" value="gay" {% if ("Gay" in ori) %} checked {% endif %}/>gay<br>
-  <input type="checkbox" name="Bi" value="bi" {% if ("Bi" in ori) %} checked {% endif %}/>bi<br>
-  <input type="checkbox" name="Pan" value="pan" {% if ("Pan" in ori) %} checked {% endif %}/>pan<br>
-  <input type="checkbox" name="Queer" value="queer" {% if ("Queer" in ori) %} checked {% endif %}/>queer<br>
-  <input type="checkbox" name="Straight" value="straight" {% if ("Straight" in ori) %} checked {% endif %}/>straight<br>
-  <input type="checkbox" name="Asexual" value="ace" {% if ("Asexual" in ori) %} checked {% endif %}/>asexual<br>
-  <input type="checkbox" name="Aromantic" value="aro" {% if ("Aromantic" in ori) %} checked {% endif %}/>aromantic<br>
-  <input type="checkbox" name="Demisexual" value="demisex" {% if ("Demisexual" in ori) %} checked {% endif %}/>demisexual<br>
-  <input type="checkbox" name="Demiromantic" value="demiro" {% if ("Demiromantic" in ori) %} checked {% endif %}/>demiromantic<br>
-  <input type="checkbox" name="Polyamorous" value="poly" {% if ("Polyamorous" in ori) %} checked {% endif %}/>polyamorous<br>
-  <input type="checkbox" name="Mono" value="mono" {% if ("Mono" in ori) %} checked {% endif %}/>monogamous<br>
-  <input type="checkbox" name="Non-mono" value="non-mono" {% if ("Non-mono" in ori) %} checked {% endif %}/>non-monogamous<br>
+  {% for o in all_orientations %}
+  {% if ori %}
+  <input type="checkbox" name="{{o}}" value="{{o}}" {% if (o in ori) %} checked {% endif %}/>{{o}}<br>
+  {% else %}
+  <input type="checkbox" name="{{o}}" value="{{o}}"/>{{o}}<br>
+  {% endif %}
+  {% endfor %}
 
   <input type="submit" value="Save">
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
