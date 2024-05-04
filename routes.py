@@ -53,16 +53,30 @@ def matches():
         return render_template("matches.html")
 
 
+def tuplelist_helper(tuplelist):
+    """make a set out of tuple list"""
+    items = set()
+    for i in tuplelist:
+        # print(i[0])
+        items.add(i[0])
+    return items
+
+
 @app.route("/edit")
 def edit():
     if "username" in session:
         username = session["username"]
         user = fun.find_name_bio(username)
-        return render_template("edit.html", user=user)
+
+        orientations = fun.get_user_orientations(username)
+        orientations = tuplelist_helper(orientations)
+        print(orientations)
+
+        return render_template("edit.html", user=user, ori=orientations)
     else:
         return render_template("edit.html")
 
-# TODO: show previous name and bio?
+
 @app.route("/editprofile", methods=["POST"])
 def editprofile():
     name = request.form["name"]
@@ -73,6 +87,45 @@ def editprofile():
 
     user_id = fun.find_session_id(session["username"])
     fun.edit_user(user_id, name, bio)
+    return redirect("/profiles")
+
+
+@app.route("/editorientations", methods=["POST"])
+def editorientations():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
+    orientations = fun.get_orientations()
+    username = session["username"]
+    user_id = fun.find_session_id(username)
+    user_orientations = fun.get_user_orientations(username)  # TODO: ???
+    user_orientations = tuplelist_helper(user_orientations)
+    # print("oris", orientations)
+    # print("userori", user_orientations)
+
+    add = []
+    remove = []
+    for ori in orientations:
+        # print("ori[0]", ori[0])
+        u = request.form.get(ori[0])
+        # print("u", u)
+        if u and ori[0] not in user_orientations:
+            add.append(ori[0])
+
+        if not u and ori[0] in user_orientations:
+            remove.append(ori[0])
+
+    # print("Add, ", add)
+    # print("Remouv", remove)
+
+    for ori in add:
+        orientation_id = fun.get_orientation_id(ori)
+        fun.add_orientation(user_id, orientation_id)
+
+    for ori in remove:
+        orientation_id = fun.get_orientation_id(ori)
+        fun.delete_orientation(user_id, orientation_id)
+
     return redirect("/profiles")
 
 

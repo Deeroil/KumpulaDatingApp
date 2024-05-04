@@ -11,9 +11,9 @@ Tietokannat ja web-ohjelmointiprojekti 2024
 * Molemminpuoliset tykkäykset näkyvät profiilirivin vieressä.
 * Validointia toteutettu, ja virheviestejä
 * Omaa profiilia voi muokata (nimi, profiiliteksti)
+* Orientaatioita voi lisätä profiiliin (tämä näkyy vain itselle) tai poistaa sieltä
 
 #### Mitä esim puuttuu:
-- orientaatioita ei vielä toteutettu
 - tykkäystä tai matchia ei voi poistaa
 - tiliä ei voi poistaa
 
