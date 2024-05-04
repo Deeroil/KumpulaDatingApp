@@ -86,11 +86,13 @@ def matches():
 
 
 def tuplelist_helper(tuplelist):
-    """make a set out of tuple list"""
-    items = set()
+    """make a list out of tuple list"""
+
+    items = []
     for i in tuplelist:
-        # print(i[0])
-        items.add(i[0])
+        if i[0] not in items:
+            items.append(i[0])
+
     if len(items) > 0:
         return items
     return None
@@ -104,9 +106,14 @@ def edit():
 
         orientations = fun.get_user_orientations(username)
         orientations = tuplelist_helper(orientations)
-        print(orientations)
+        all_orientations = fun.get_orientations()
+        all_orientations = tuplelist_helper(all_orientations)
+        # print("all:", all_orientations)
+        # print("users", orientations)
 
-        return render_template("edit.html", user=user, ori=orientations)
+        return render_template(
+            "edit.html", user=user, ori=orientations, all_orientations=all_orientations
+        )
     else:
         return render_template("edit.html")
 
@@ -130,6 +137,7 @@ def editorientations():
         abort(403)
 
     orientations = fun.get_orientations()
+    orientations = tuplelist_helper(orientations)
     username = session["username"]
     user_id = fun.find_session_id(username)
     user_orientations = fun.get_user_orientations(username)  # TODO: ???
@@ -139,26 +147,32 @@ def editorientations():
 
     add = []
     remove = []
-    for ori in orientations:
-        # print("ori[0]", ori[0])
-        u = request.form.get(ori[0])
-        # print("u", u)
-        if u and ori[0] not in user_orientations:
-            add.append(ori[0])
+    if user_orientations:
+        for ori in orientations:
+            u = request.form.get(ori)
+            # print("u", u)
+            if u and ori not in user_orientations:
+                add.append(ori)
 
-        if not u and ori[0] in user_orientations:
-            remove.append(ori[0])
+            if not u and ori in user_orientations:
+                remove.append(ori)
+    else:
+        print("no orientations")
+        for ori in orientations:
+            u = request.form.get(ori)
+            if u:
+                add.append(ori)
+
+    for new in add:
+        orientation_id = fun.get_orientation_id(new)
+        fun.add_orientation(user_id, orientation_id)
+
+    for deleted in remove:
+        orientation_id = fun.get_orientation_id(deleted)
+        fun.delete_orientation(user_id, orientation_id)
 
     # print("Add, ", add)
     # print("Remouv", remove)
-
-    for ori in add:
-        orientation_id = fun.get_orientation_id(ori)
-        fun.add_orientation(user_id, orientation_id)
-
-    for ori in remove:
-        orientation_id = fun.get_orientation_id(ori)
-        fun.delete_orientation(user_id, orientation_id)
 
     return redirect("/profiles")
 
