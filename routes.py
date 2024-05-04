@@ -18,13 +18,26 @@ def profiles():
         user_id = fun.find_session_id(username)
         matches = fun.find_match_usernames(user_id)
         matches = tuplelist_helper(matches)
-        print("matches now:", matches)
+        # print("matches now:", matches)
 
         likes = fun.get_liked_usernames(user_id)
         likes = tuplelist_helper(likes)
+        # print("usersss,", users)
 
+        userori = {}
+        for u in users:
+            ori = fun.get_user_orientations(u.username)
+            ori = tuplelist_helper(ori)
+            userori[u.username] = ori
+
+        print("userori", userori)
         return render_template(
-            "profiles.html", count=len(users), users=users, likes=likes, matches=matches
+            "profiles.html",
+            count=len(users),
+            users=users,
+            likes=likes,
+            matches=matches,
+            orientations=userori,
         )
     else:
         return render_template("profiles.html")
@@ -56,7 +69,18 @@ def matches():
         user_id = fun.find_session_id(username)
         matchlist = fun.find_match_profiles(user_id)
 
-        return render_template("matches.html", count=len(matchlist), matches=matchlist)
+        userori = {}
+        for u in matchlist:
+            ori = fun.get_user_orientations(u.username)
+            ori = tuplelist_helper(ori)
+            userori[u.username] = ori
+
+        return render_template(
+            "matches.html",
+            count=len(matchlist),
+            matches=matchlist,
+            orientations=userori,
+        )
     else:
         return render_template("matches.html")
 
@@ -67,7 +91,9 @@ def tuplelist_helper(tuplelist):
     for i in tuplelist:
         # print(i[0])
         items.add(i[0])
-    return items
+    if len(items) > 0:
+        return items
+    return None
 
 
 @app.route("/edit")

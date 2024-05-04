@@ -5,8 +5,9 @@
 <a href="/edit">Edit profile</a>
 <p>Logged in as {{ session.username }}</p>
 
-<p>Like user by clicking checkbox. You can't remove a like.</p>
-
+Like user by clicking checkbox and "Send likes"<br>
+You can't undo a like.<br>
+<br>
 Profiles: {{ count }}<br>
 Matches: {{ matches|length }}
 <form action="/sendlikes" method="POST">
@@ -19,7 +20,17 @@ Matches: {{ matches|length }}
 <input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"/>
 {% endif %}
 
-{{ user.name }} ({{ user.field }}) Bio: "{{ user.bio }}"
+{{ user.name }}
+({{ user.field }})
+
+{% if orientations[user.username] is not none %}
+
+({%for ori in orientations[user.username]%}
+{{ori}}
+{% endfor %})
+{% endif %}
+
+"{{ user.bio }}"
 
 {% for match in matches %}
 {% if match == user.username%}

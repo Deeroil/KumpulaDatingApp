@@ -10,7 +10,19 @@
 Matches: {{ count }}
 <hr>
 {% for match in matches %}
-{{ match.name, match.field, match.bio }}
+
+{{ match.name }}
+({{ match.field }})
+
+{% if orientations[match.username] is not none %}
+
+({%for ori in orientations[match.username]%}
+{{ori}}
+{% endfor %})
+{% endif %}
+
+"{{ match.bio }}"
+
 <hr>
 {% endfor %}
 {%else%}
