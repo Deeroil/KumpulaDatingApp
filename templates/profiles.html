@@ -5,23 +5,30 @@
 <a href="/edit">Edit profile</a>
 <p>Logged in as {{ session.username }}</p>
 
+<p>Like user by clicking checkbox. You can't remove a like.</p>
 
-Profiles: {{ count }}
+Profiles: {{ count }}<br>
+Matches: {{ matches|length }}
 <form action="/sendlikes" method="POST">
 <hr>
 {% for user in users %}
 
+{% if user.username in likes %}
+<input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"" checked disabled/>
+{% else %}
 <input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"/>
+{% endif %}
+
 {{ user.name, user.field, user.bio }}
 
 {% for match in matches %}
-{% if match.username == user.username%}
-!! woo match !!
+{% if match == user.username%}
+!! match !!
 {% endif %}
 {% endfor %}
 <hr>
 {% endfor %}
-<input type="submit" value="Send">
+<input type="submit" value="Send likes">
 </form>
 
 {% else %}

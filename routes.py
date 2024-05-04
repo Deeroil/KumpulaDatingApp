@@ -17,7 +17,15 @@ def profiles():
         users = fun.find_userdata_no_curr(username)
         user_id = fun.find_session_id(username)
         matches = fun.find_match_usernames(user_id)
-        return render_template("profiles.html",count=len(users), users=users, matches=matches)
+        matches = tuplelist_helper(matches)
+        print("matches now:", matches)
+
+        likes = fun.get_liked_usernames(user_id)
+        likes = tuplelist_helper(likes)
+
+        return render_template(
+            "profiles.html", count=len(users), users=users, likes=likes, matches=matches
+        )
     else:
         return render_template("profiles.html")
 
