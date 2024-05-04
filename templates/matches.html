@@ -11,9 +11,9 @@ Matches: {{ count }}
 <hr>
 {% for match in matches %}
 {{ match.name, match.field, match.bio }}
-{% end for %}
 <hr>
-{% else %}
+{% endfor %}
+{%else%}
 <p>No matches yet</p>
 {% endif %}
 
