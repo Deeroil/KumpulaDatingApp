@@ -13,19 +13,20 @@ CREATE TABLE orientations (
   orientation TEXT UNIQUE
   );
 
-INSERT INTO orientations (orientation) VALUES ('Straight');
 INSERT INTO orientations (orientation) VALUES ('Gay');
 INSERT INTO orientations (orientation) VALUES ('Bi');
 INSERT INTO orientations (orientation) VALUES ('Pan');
 INSERT INTO orientations (orientation) VALUES ('Queer');
+INSERT INTO orientations (orientation) VALUES ('Straight');
 INSERT INTO orientations (orientation) VALUES ('Asexual');
 INSERT INTO orientations (orientation) VALUES ('Aromantic');
 INSERT INTO orientations (orientation) VALUES ('Demisexual');
 INSERT INTO orientations (orientation) VALUES ('Demiromantic');
-INSERT INTO orientations (orientation) VALUES ('Mono');
-INSERT INTO orientations (orientation) VALUES ('Non-mono');
+INSERT INTO orientations (orientation) VALUES ('Kinky');
+INSERT INTO orientations (orientation) VALUES ('Vanilla');
 INSERT INTO orientations (orientation) VALUES ('Polyamorous');
-
+INSERT INTO orientations (orientation) VALUES ('Non-mono');
+INSERT INTO orientations (orientation) VALUES ('Mono');
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
