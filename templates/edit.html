@@ -1,10 +1,10 @@
 {% if session.username %}
-<a href="/">Etusivu</a>
-<a href="/logout">Kirjaudu ulos</a>
-<a href="/profiles">Profiilit</a>
-<a href="/matches">Katso matchit</a>
+<a href="/">Front page</a>
+<a href="/logout">Logout</a>
+<a href="/profiles">Profiles</a>
+<a href="/matches">Matches</a>
 
-<p>Olet kirjautunut käyttäjällä {{ session.username }}</p>
+<p>Logged in as {{ session.username }}</p>
 
 <br>
 <div>
@@ -45,11 +45,11 @@ Edit your orientations:
 <script>
   function check(form) {
     if (form.name.value.length < 2 || form.name.value.length > 15) {
-      alert("Nimen tulee olla 2-15 merkkiä pitkä");
+      alert("Name should be 2-15 characters long");
       return false;
     }
     if (form.bio.value.length < 3 || form.bio.value.length > 200) {
-      alert("Profiilitekstin tulee olla 3-200 merkkiä pitkä");
+      alert("Profile text should be 3-200 characters long");
       return false;
     }
     return true;
@@ -58,8 +58,8 @@ Edit your orientations:
 
 {% else %}
 
-<hr> ei pääsyä sivulle, et ole kirjautunut!
-<a href="/">Siirry kirjautumaan</a>
-<a href="/register">Rekisteröidy</a>
+<hr> You're not logged in!
+<a href="/">Login</a>
+<a href="/register">Register</a>
 
 {% endif %}

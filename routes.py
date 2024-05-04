@@ -145,27 +145,27 @@ def sendregister():
     bio = request.form["bio"]
 
     if not username or not passw or not name or not field:
-        return render_template("error.html", message="Tietoja puuttuu")
+        return render_template("error.html", message="Missing information")
 
     # TODO: näinkö?
     if not 2 < len(username) < 26:
         return render_template(
-            "error.html", message="Käyttäjänimen tulee olla 3-25 merkkiä pitkä"
+            "error.html", message="Username should be 3-25 characters long"
         )
 
     if not 11 < len(passw) < 36:
         return render_template(
-            "error.html", message="Salasanan tulee olla 12-35 merkkiä pitkä"
+            "error.html", message="Password should be 12-35 characters long"
         )
 
     if not 1 < len(name) < 16:
         return render_template(
-            "error.html", message="Nimen tulee olla 2-15 merkkiä pitkä"
+            "error.html", message="Name should be 2-15 characters long"
         )
 
     if not 2 < len(name) < 201:
         return render_template(
-            "error.html", message="Profiilitekstin tulee olla 3-200 merkkiä pitkä"
+            "error.html", message="Profile text should be 3-200 characters long"
         )
 
     print("FIELD", field)
@@ -174,7 +174,7 @@ def sendregister():
 
     if user:
         print("error: user exists")
-        return render_template("error.html", message="Käyttäjätunnus on jo olemassa")
+        return render_template("error.html", message="Username already exists")
     else:
         passw_hashed = generate_password_hash(passw)
         field_id = fun.get_field_id(field)
@@ -196,7 +196,7 @@ def login():
 
     if not user:
         print("Error: invalid username")
-        return render_template("error.html", message="Käyttäjätunnusta ei olemassa")
+        return render_template("error.html", message="Username doesn't exist")
     else:
         hash_value = user.passw
         if check_password_hash(hash_value, password):
@@ -204,8 +204,8 @@ def login():
             session["csrf_token"] = secrets.token_hex(16)
             return redirect("/profiles")
         else:
-            print("Error: väärä salasana")
-            return render_template("error.html", message="Väärä salasana")
+            print("Error: wrong password")
+            return render_template("error.html", message="Wrong password")
 
 
 @app.route("/logout")
