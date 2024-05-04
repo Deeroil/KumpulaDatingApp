@@ -10,8 +10,9 @@ Profiles: {{ count }}
 <form action="/sendlikes" method="POST">
 <hr>
 {% for user in users %}
-{{ user.name, user.field, user.bio }}
+
 <input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"/>
+{{ user.name, user.field, user.bio }}
 
 {% for match in matches %}
 {% if match.username == user.username%}
@@ -22,8 +23,6 @@ Profiles: {{ count }}
 {% endfor %}
 <input type="submit" value="Send">
 </form>
-
-<a href="/edit">Edit profile</a>
 
 {% else %}
 
