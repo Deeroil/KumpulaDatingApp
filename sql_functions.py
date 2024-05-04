@@ -68,7 +68,6 @@ def find_userdata():
     users = result.fetchall()
     return users
 
-
 def find_userdata_no_curr(username):
     command = text(
         """SELECT username, name, studyfields.field, bio
@@ -103,10 +102,10 @@ def find_match_profiles(user_id):
             LEFT JOIN users ON users.id = A.likee_id
             LEFT JOIN studyfields ON studyfields.id = users.studyfield_id
             LEFT JOIN likes as B ON A.liker_id = B.likee_id
-            AND A.likee_id =  B.liker_id
+            WHERE A.likee_id =  B.liker_id
                     AND A.likee_id != B.likee_id
                     AND A.liker_id = :user_id
-            GROUP BY studyfields.field, name, bio;
+            GROUP BY studyfields.field, name, bio
         """
     )
     result = db.session.execute(command, {"user_id": user_id})
@@ -117,7 +116,7 @@ def find_match_usernames(user_id):
         """SELECT username FROM likes as A
             LEFT JOIN users ON users.id = A.likee_id
             LEFT JOIN likes as B ON A.liker_id = B.likee_id
-            AND A.likee_id =  B.liker_id
+            WHERE A.likee_id =  B.liker_id
                     AND A.likee_id != B.likee_id
                     AND A.liker_id = :user_id
             GROUP BY username
