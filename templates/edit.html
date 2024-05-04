@@ -17,7 +17,7 @@
   Profile (3-200 char): <br>
   <textarea name="bio" rows="3" cols="40" required>{{ user.bio }}</textarea>
   <br>
-  <input type="submit" value="Send">
+  <input type="submit" value="Save">
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
@@ -38,7 +38,7 @@ Edit your orientations:
   <input type="checkbox" name="Mono" value="mono" {% if ("Mono" in ori) %} checked {% endif %}/>monogamous<br>
   <input type="checkbox" name="Non-mono" value="non-mono" {% if ("Non-mono" in ori) %} checked {% endif %}/>non-monogamous<br>
 
-  <input type="submit" value="Send">
+  <input type="submit" value="Save">
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 

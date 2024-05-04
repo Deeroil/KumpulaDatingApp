@@ -45,6 +45,7 @@ def find_id_passw(username):
     result = db.session.execute(sql, {"username": username})
     return result.fetchone()
 
+
 def find_name_bio(username):
     sql = text("SELECT name, bio FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": username})
@@ -67,6 +68,7 @@ def find_userdata():
     result = db.session.execute(command)
     users = result.fetchall()
     return users
+
 
 def find_userdata_no_curr(username):
     command = text(
@@ -124,6 +126,7 @@ def find_match_profiles(user_id):
     result = db.session.execute(command, {"user_id": user_id})
     return result.fetchall()
 
+
 def find_match_usernames(user_id):
     command = text(
         """SELECT username FROM likes as A
@@ -147,6 +150,7 @@ def get_field_id(fieldname):
     )
     return result.fetchone()[0]
 
+
 def get_orientations():
     command = text(""" SELECT orientation FROM orientations""")
     result = db.session.execute(command)
@@ -162,16 +166,18 @@ def get_user_orientations(username):
         LEFT JOIN orientations ON orientations.id = user_orientations.orientation_id
         WHERE username = :username
         """
-        )
+    )
     result = db.session.execute(command, {"username": username})
     orientations = result.fetchall()
     print("ORIENTATIONS", orientations)
     return orientations
 
+
 def get_orientation_id(orientation):
     command = text("SELECT id FROM orientations WHERE orientation=:orientation")
     result = db.session.execute(command, {"orientation": orientation})
     return result.fetchone()[0]
+
 
 def add_orientation(user_id, orientation_id):
     command = text(
@@ -181,8 +187,9 @@ def add_orientation(user_id, orientation_id):
             """
     )
 
-    db.session.execute(command,{"user_id": user_id, "orientation_id": orientation_id})
+    db.session.execute(command, {"user_id": user_id, "orientation_id": orientation_id})
     db.session.commit()
+
 
 def delete_orientation(user_id, orientation_id):
     command = text(
@@ -192,5 +199,5 @@ def delete_orientation(user_id, orientation_id):
             AND user_orientations.orientation_id=:orientation_id
             """
     )
-    db.session.execute(command,{"user_id": user_id, "orientation_id": orientation_id})
+    db.session.execute(command, {"user_id": user_id, "orientation_id": orientation_id})
     db.session.commit()

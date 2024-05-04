@@ -19,7 +19,7 @@ Matches: {{ matches|length }}
 <input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"/>
 {% endif %}
 
-{{ user.name, user.field, user.bio }}
+{{ user.name }} ({{ user.field }}) Bio: "{{ user.bio }}"
 
 {% for match in matches %}
 {% if match == user.username%}
