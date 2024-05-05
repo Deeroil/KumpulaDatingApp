@@ -8,14 +8,11 @@ Tietokannat ja web-ohjelmointiprojekti 2024
 * Voi kirjautua.
 * Voi kirjautuneena katsoa listaa muista käyttäjistä.
 * Voi klikata checkboxia ja lähettää lomakkeen, jolla tykätään käyttäjästä.
-* Molemminpuoliset tykkäykset näkyvät profiilirivin vieressä.
+* Molemminpuoliset tykkäykset näkyvät profiilirivin vieressä sekä erillisellä sivullaan
+* Matchia ja tykkäystä ei voi poistaa
 * Validointia toteutettu, ja virheviestejä
 * Omaa profiilia voi muokata (nimi, profiiliteksti)
-* Orientaatioita voi lisätä profiiliin (tämä näkyy vain itselle) tai poistaa sieltä
-
-#### Mitä esim puuttuu:
-- tykkäystä tai matchia ei voi poistaa
-- tiliä ei voi poistaa
+* Orientaatioita voi lisätä profiiliin tai poistaa
 
 ### Käyttöohje:
 
@@ -32,21 +29,17 @@ Jos haluat poistaa sovelluksen taulut, käytä `psql < drop.sql`
 
 
 
-#### TODO:
-- yksinkertainen UI
+#### Kehitysideoita
+- UI:n parantaminen
+	- virheidenhallintaa enemmän samalle sivulle
+	- profiileille omat sivut, tyyliä /:username (tätä varten enemmän profiiliin?)
 - UUID:t
-- käyttäjistä vain osan näyttäminen
-
-Ehkä:
-- keskusteluominaisuus, alustavasti ei suunniteltu
+- kuvien lisääminen: tietokanta niille, blobeina säilöttynä tai path. ehkä vain yksi kuva per henkilö, optional?
+- ehkä useampia like-tauluja, joka kategorialle olisi oma taulunsa
+	- cuddling, romantic, sexual, friendship? entä opiskeluseura?
+- käyttäjistä vain osan näyttäminen (esim: älä näy tietyn orientaation ihmisille)
+- keskusteluominaisuus
 - Telegram-botti
-- Jokainen käyttäjä voi millaista seuraa heistä voi hakea, eli kaikki eri matchausominaisuudet eivät automaattisesti valittavina
-  - Ehkä tosin mahdollisesti ongelma jos edellisiä pyyhkiytyy pois?
-	- vaihtoehtoisesti kaikilla kaikki checkboxit jos useammanlaisia vaihtoehtoja, mutta jos ei itse klikkaa niin sillä selviää
-
-
-Jatkokehitysideoita:
-* ehkä useampia like-tauluja jokaisesta osiosta olisi oma taulunsa
-	* cuddling, romantic, sexual, friendship? entä opiskeluseura?
-
-- kuvien lisääminen: tietokanta niille, blobeina säilöttynä tai path. ehkä vain yksi kuva per henkilö, onko optional?
+- salasanat
+	- erikoismerkkien vaatiminen tai vastaava
+	- salasanan vaihtaminen
