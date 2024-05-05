@@ -14,9 +14,9 @@ def index():
 def profiles():
     if "username" in session:
         username = session["username"]
-        users = fun.find_userdata_no_curr(username)
-        user_id = fun.find_session_id(username)
-        matches = fun.find_match_usernames(username)
+        users = fun.get_userdata_no_curr(username)
+        user_id = fun.get_username_id(username)
+        matches = fun.get_match_usernames(username)
         matches = tuplelist_helper(matches)
         # print("matches now:", matches)
 
@@ -45,7 +45,7 @@ def profiles():
 
 @app.route("/sendlikes", methods=["POST"])
 def sendlikes():
-    users = fun.find_username_id()
+    users = fun.get_usernames_ids()
     liked = []
     for user in users:
         u = request.form.get(user.username)
@@ -53,7 +53,7 @@ def sendlikes():
             liked.append(user.id)
 
     username = session["username"]
-    user_id = fun.find_session_id(username)
+    user_id = fun.get_username_id(username)
 
     if len(liked) > 0:
         for likee_id in liked:
@@ -71,7 +71,7 @@ def sendlikes():
 def matches():
     if "username" in session:
         username = session["username"]
-        matchlist = fun.find_match_profiles(username)
+        matchlist = fun.get_match_profiles(username)
 
         userori = {}
         for u in matchlist:
@@ -106,11 +106,11 @@ def tuplelist_helper(tuplelist):
 def edit():
     if "username" in session:
         username = session["username"]
-        user = fun.find_name_bio(username)
+        user = fun.get_names_bios(username)
 
         orientations = fun.get_user_orientations(username)
         orientations = tuplelist_helper(orientations)
-        all_orientations = fun.get_orientations()
+        all_orientations = fun.get_all_orientations()
         all_orientations = tuplelist_helper(all_orientations)
         # print("all:", all_orientations)
         # print("users", orientations)
@@ -140,10 +140,10 @@ def editorientations():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    orientations = fun.get_orientations()
+    orientations = fun.get_all_orientations()
     orientations = tuplelist_helper(orientations)
     username = session["username"]
-    user_id = fun.find_session_id(username)
+    user_id = fun.get_username_id(username)
     user_orientations = fun.get_user_orientations(username)
     user_orientations = tuplelist_helper(user_orientations)
     # print("oris", orientations)
@@ -170,7 +170,7 @@ def editorientations():
     for new in add:
         orientation_id = fun.get_orientation_id(new)
         try:
-            fun.add_orientation(user_id, orientation_id)
+            fun.insert_user_orientation(user_id, orientation_id)
         except:
             return render_template(
                 "error.html", message="Invalid request. Orientation already added."
@@ -214,7 +214,7 @@ def sendregister():
             "error.html", message="Profile text should be 3-200 characters long"
         )
 
-    user = fun.find_username(username)
+    user = fun.check_username_exists(username)
     if user:
         print("error: user exists")
         return render_template("error.html", message="Username already exists")
@@ -235,7 +235,7 @@ def register():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    user = fun.find_id_passw(username)
+    user = fun.get_ids_passws(username)
 
     if not user:
         print("Error: invalid username")

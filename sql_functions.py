@@ -1,7 +1,6 @@
 from db import db
 from sqlalchemy.sql import text
 
-# TODO: rename these a bit
 # TODO: split into multiple files
 
 
@@ -26,7 +25,7 @@ def create_user(username, passw_hashed, name, field_id, bio):
     db.session.commit()
 
 
-def find_username(username):
+def check_username_exists(username):
     result = db.session.execute(
         text("SELECT username FROM users WHERE username=:username"),
         {"username": username},
@@ -34,31 +33,31 @@ def find_username(username):
     return result.fetchone()
 
 
-def find_username_id():
+def get_usernames_ids():
     command = text("SELECT username, id FROM users")
     result = db.session.execute(command)
     return result.fetchall()
 
 
-def find_id_passw(username):
+def get_ids_passws(username):
     sql = text("SELECT id, passw FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": username})
     return result.fetchone()
 
 
-def find_name_bio(username):
+def get_names_bios(username):
     sql = text("SELECT name, bio FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": username})
     return result.fetchone()
 
 
-def find_session_id(username):
+def get_username_id(username):
     command = text("SELECT id FROM users WHERE username=:username")
     result = db.session.execute(command, {"username": username})
     return result.fetchone()[0]
 
 
-def find_userdata():
+def get_userdata():
     command = text(
         """SELECT username, name, studyfields.field, bio
             FROM users
@@ -70,7 +69,7 @@ def find_userdata():
     return users
 
 
-def find_userdata_no_curr(username):
+def get_userdata_no_curr(username):
     command = text(
         """SELECT username, name, studyfields.field, bio
             FROM users
@@ -111,7 +110,7 @@ def get_liked_usernames(liker_id):
     return users
 
 
-def find_match_profiles(username):
+def get_match_profiles(username):
     command = text(
         """SELECT Y.username, Y.name, studyfields.field, Y.bio
             FROM likes as A
@@ -129,7 +128,7 @@ def find_match_profiles(username):
     return result.fetchall()
 
 
-def find_match_usernames(username):
+def get_match_usernames(username):
     command = text(
         """SELECT Y.username FROM likes as A
             LEFT JOIN users as X ON X.id = A.likee_id
@@ -154,11 +153,11 @@ def get_field_id(fieldname):
     return result.fetchone()[0]
 
 
-def get_orientations():
+def get_all_orientations():
     command = text(""" SELECT orientation FROM orientations""")
     result = db.session.execute(command)
     orientations = result.fetchall()
-    print("ORIENTATIONS ALL", orientations)
+    # print("ORIENTATIONS ALL", orientations)
     return orientations
 
 
@@ -172,7 +171,7 @@ def get_user_orientations(username):
     )
     result = db.session.execute(command, {"username": username})
     orientations = result.fetchall()
-    print("ORIENTATIONS", orientations)
+    # print("USER'S ORIENTATIONS", orientations)
     return orientations
 
 
@@ -182,7 +181,7 @@ def get_orientation_id(orientation):
     return result.fetchone()[0]
 
 
-def add_orientation(user_id, orientation_id):
+def insert_user_orientation(user_id, orientation_id):
     command = text(
         """INSERT INTO user_orientations (user_id, orientation_id)
             VALUES (:user_id, :orientation_id)
