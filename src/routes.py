@@ -6,6 +6,7 @@ import src.likes as likes
 import src.users as users
 import src.orientations as orientations
 import src.studyfields as studyfields
+import src.helper_func as helper
 import secrets
 from app import app
 
@@ -22,18 +23,19 @@ def profiles():
         userdata = users.get_userdata_no_curr(username)
         user_id = users.get_username_id(username)
         matches = likes.get_match_usernames(username)
-        matches = tuplelist_helper(matches)
         # print("matches now:", matches)
 
         liked_list = likes.get_liked_usernames(user_id)
-        liked_list = tuplelist_helper(liked_list)
         # print("usersss,", users)
 
         userori = {}
         for u in userdata:
             ori = orientations.get_user_orientations(u.username)
-            ori = tuplelist_helper(ori)
+            ori = helper.tuplelist_helper(ori)
             userori[u.username] = ori
+
+        liked_list = helper.tuplelist_helper(liked_list)
+        matches = helper.tuplelist_helper(matches)
 
         print("userori", userori)
         return render_template(
@@ -81,7 +83,7 @@ def matches():
         userori = {}
         for u in matchlist:
             ori = orientations.get_user_orientations(u.username)
-            ori = tuplelist_helper(ori)
+            ori = helper.tuplelist_helper(ori)
             userori[u.username] = ori
 
         return render_template(
@@ -94,19 +96,6 @@ def matches():
         return render_template("matches.html")
 
 
-def tuplelist_helper(tuplelist):
-    """make a list out of tuple list"""
-
-    items = []
-    for i in tuplelist:
-        if i[0] not in items:
-            items.append(i[0])
-
-    if len(items) > 0:
-        return items
-    return None
-
-
 @app.route("/edit")
 def edit():
     if "username" in session:
@@ -114,9 +103,11 @@ def edit():
         user = users.get_names_bios(username)
 
         orien_list = orientations.get_user_orientations(username)
-        orien_list = tuplelist_helper(orien_list)
         all_orientations = orientations.get_all_orientations()
-        all_orientations = tuplelist_helper(all_orientations)
+
+        orien_list = helper.tuplelist_helper(orien_list)
+        all_orientations = helper.tuplelist_helper(all_orientations)
+
         # print("all:", all_orientations)
         # print("users", orientations)
 
@@ -132,6 +123,9 @@ def editprofile():
     name = request.form["name"]
     bio = request.form["bio"]
 
+    if error := helper.validate_edit(name, bio):
+        return error
+
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
@@ -145,11 +139,12 @@ def editorientations():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    orien_list = orientations.get_all_orientations()
-    orien_list = tuplelist_helper(orien_list)
     username = session["username"]
     user_orientations = orientations.get_user_orientations(username)
-    user_orientations = tuplelist_helper(user_orientations)
+    orien_list = orientations.get_all_orientations()
+
+    user_orientations = helper.tuplelist_helper(user_orientations)
+    orien_list = helper.tuplelist_helper(orien_list)
     # print("oris", orientations)
     # print("userori", user_orientations)
 
@@ -196,28 +191,8 @@ def sendregister():
     field = request.form["field"]
     bio = request.form["bio"]
 
-    if not username or not passw or not name or not field:
-        return render_template("error.html", message="Missing information")
-
-    if not 2 < len(username) < 26:
-        return render_template(
-            "error.html", message="Username should be 3-25 characters long"
-        )
-
-    if not 11 < len(passw) < 36:
-        return render_template(
-            "error.html", message="Password should be 12-35 characters long"
-        )
-
-    if not 1 < len(name) < 16:
-        return render_template(
-            "error.html", message="Name should be 2-15 characters long"
-        )
-
-    if not 2 < len(name) < 201:
-        return render_template(
-            "error.html", message="Profile text should be 3-200 characters long"
-        )
+    if error := helper.validate_register(username, passw, name, field, bio):
+        return error
 
     user = users.check_username_exists(username)
     if user:
