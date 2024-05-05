@@ -1,6 +1,6 @@
 # Kumpulan kampuksen ihmis_haku_app
 
-Tietokannat ja web-ohjelmointiprojekti 2024
+Tietokannat ja web-ohjelmointi 2024
 
 
 ### Tämänhetkinen toiminnallisuus:
@@ -18,6 +18,10 @@ Tietokannat ja web-ohjelmointiprojekti 2024
 
 Luo juureen tiedosto `.env` ja aseta sinne `DATABASE_URL` sekä `SECRET_KEY`
 
+Käynnistä virtuaaliympäristö
+`python3 -m venv venv`
+`source venv/bin/activate`
+
 Lataa riippuvuudet `pip install -r requirements.txt`
 
 Luo tietokantataulut `psql < schema.sql`
@@ -27,6 +31,7 @@ Jos haluat poistaa sovelluksen taulut, käytä `psql < drop.sql`
 `psql < userdata.sql` sisältää useita valmiita profiileja, joiden kaikkien salasana on `salasana`.
 (huom: sovelluksen sisällä tehdyissä profiileissa kyseinen salasana olisi liian lyhyt)
 
+Sovelluksen voi käynnistää lokaalisti ajamalla `flask run`
 
 
 #### Kehitysideoita
@@ -43,3 +48,6 @@ Jos haluat poistaa sovelluksen taulut, käytä `psql < drop.sql`
 - salasanat
 	- erikoismerkkien vaatiminen tai vastaava
 	- salasanan vaihtaminen
+- matchin ilmestyessä ilmoitus
+- matchattyjen kanssa esim yhteystiedon vaihto (telegram tai vastaava)
+- lisää enemmän opiskelualoja joista valita
