@@ -1,11 +1,12 @@
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import check_password_hash, generate_password_hash
+from psycopg2.errors import UniqueViolation
+from sqlalchemy.exc import IntegrityError
 import src.likes as likes
 import src.users as users
 import src.orientations as orientations
 import src.studyfields as studyfields
 import secrets
-from psycopg2.errors import UniqueViolation
 from app import app
 
 
@@ -63,7 +64,7 @@ def sendlikes():
         for likee_id in liked:
             try:
                 likes.insert_like(user_id, likee_id)
-            except UniqueViolation:
+            except (UniqueViolation, IntegrityError):
                 return render_template(
                     "error.html", message="Invalid request. Like already exists."
                 )
@@ -175,7 +176,7 @@ def editorientations():
         orientation_id = orientations.get_orientation_id(new)
         try:
             orientations.insert_user_orientation(user_id, orientation_id)
-        except UniqueViolation:
+        except (UniqueViolation, IntegrityError):
             return render_template(
                 "error.html", message="Invalid request. Orientation already added."
             )
