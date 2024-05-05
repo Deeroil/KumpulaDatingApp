@@ -7,10 +7,9 @@ from sqlalchemy.sql import text
 # user functions
 def create_user(username, passw_hashed, name, field_id, bio):
     sql = text(
-        """
-            INSERT INTO users (username, passw, name, studyfield_id, bio)
+        """INSERT INTO users (username, passw, name, studyfield_id, bio)
             VALUES (:username, :passw, :name, :studyfield_id, :bio)
-            """
+        """
     )
 
     db.session.execute(
@@ -160,11 +159,11 @@ def get_orientations():
 
 
 def get_user_orientations(username):
-    command = text("""
-                   SELECT orientation FROM user_orientations
-        LEFT JOIN users ON users.id = user_orientations.user_id
-        LEFT JOIN orientations ON orientations.id = user_orientations.orientation_id
-        WHERE username = :username
+    command = text(
+        """SELECT orientation FROM user_orientations
+            LEFT JOIN users ON users.id = user_orientations.user_id
+            LEFT JOIN orientations ON orientations.id = user_orientations.orientation_id
+            WHERE username = :username
         """
     )
     result = db.session.execute(command, {"username": username})
@@ -181,10 +180,9 @@ def get_orientation_id(orientation):
 
 def add_orientation(user_id, orientation_id):
     command = text(
-        """
-            INSERT INTO user_orientations (user_id, orientation_id)
+        """INSERT INTO user_orientations (user_id, orientation_id)
             VALUES (:user_id, :orientation_id)
-            """
+        """
     )
 
     db.session.execute(command, {"user_id": user_id, "orientation_id": orientation_id})
@@ -193,11 +191,10 @@ def add_orientation(user_id, orientation_id):
 
 def delete_orientation(user_id, orientation_id):
     command = text(
-        """
-            DELETE FROM user_orientations
+        """DELETE FROM user_orientations
             WHERE user_orientations.user_id=:user_id
             AND user_orientations.orientation_id=:orientation_id
-            """
+        """
     )
     db.session.execute(command, {"user_id": user_id, "orientation_id": orientation_id})
     db.session.commit()
