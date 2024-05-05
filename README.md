@@ -2,6 +2,8 @@
 
 Tietokannat ja web-ohjelmointi 2024
 
+Fly.io linkki: https://kumpula-dating-app.fly.dev/
+
 
 ### Tämänhetkinen toiminnallisuus:
 * Voi rekisteröityä.
