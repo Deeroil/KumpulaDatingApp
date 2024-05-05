@@ -57,7 +57,12 @@ def sendlikes():
 
     if len(liked) > 0:
         for likee_id in liked:
-            fun.insert_like(user_id, likee_id)
+            try:
+                fun.insert_like(user_id, likee_id)
+            except:
+                return render_template(
+                    "error.html", message="Invalid request. Like already exists."
+                )
 
     return redirect("/profiles")
 
@@ -164,7 +169,12 @@ def editorientations():
 
     for new in add:
         orientation_id = fun.get_orientation_id(new)
-        fun.add_orientation(user_id, orientation_id)
+        try:
+            fun.add_orientation(user_id, orientation_id)
+        except:
+            return render_template(
+                "error.html", message="Invalid request. Orientation already added."
+            )
 
     for deleted in remove:
         orientation_id = fun.get_orientation_id(deleted)

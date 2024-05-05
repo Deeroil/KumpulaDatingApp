@@ -40,11 +40,13 @@ CREATE TABLE users (
 CREATE TABLE user_orientations (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),
-  orientation_id INTEGER REFERENCES orientations(id)
+  orientation_id INTEGER REFERENCES orientations(id),
+  UNIQUE (user_id, orientation_id)
 );
 
 CREATE TABLE likes (
   id SERIAL PRIMARY KEY,
   liker_id INTEGER REFERENCES users,
-  likee_id INTEGER REFERENCES users
+  likee_id INTEGER REFERENCES users,
+  UNIQUE (liker_id, likee_id)
 );
