@@ -14,9 +14,9 @@ Matches: {{ count }}
 {{ match.name }}
 ({{ match.field }})
 
-{% if orientations[match.username] is not none %}
+{% if orientations[match.username] %}
 
-({%for ori in orientations[match.username]%}
+({% for ori in orientations[match.username] %}
 {{ori}}
 {% endfor %})
 {% endif %}
@@ -25,7 +25,7 @@ Matches: {{ count }}
 
 <hr>
 {% endfor %}
-{%else%}
+{% else %}
 <p>No matches yet</p>
 {% endif %}
 

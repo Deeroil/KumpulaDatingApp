@@ -9,12 +9,12 @@ Like user by clicking checkbox and "Send likes"<br>
 You can't undo a like.<br>
 <br>
 Profiles: {{ count }}<br>
-Matches: {{ matches|length }}
+Matches: {% if matches %} {{ matches|length }} {% else %} 0 {% endif %}
 <form action="/sendlikes" method="POST">
 <hr>
 {% for user in users %}
 
-{% if user.username in likes %}
+{% if likes and user.username in likes %}
 <input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"" checked disabled/>
 {% else %}
 <input type="checkbox" id="{{ user.username }}" name="{{ user.username }}" value="{{ user.username }}"/>
@@ -23,20 +23,22 @@ Matches: {{ matches|length }}
 {{ user.name }}
 ({{ user.field }})
 
-{% if orientations[user.username] is not none %}
+{% if orientations[user.username] %}
 
-({%for ori in orientations[user.username]%}
+({% for ori in orientations[user.username] %}
 {{ori}}
 {% endfor %})
 {% endif %}
 
 "{{ user.bio }}"
 
+{% if matches %}
 {% for match in matches %}
-{% if match == user.username%}
+{% if match == user.username %}
 !! match !!
 {% endif %}
 {% endfor %}
+{% endif %}
 <hr>
 {% endfor %}
 <input type="submit" value="Send likes">
