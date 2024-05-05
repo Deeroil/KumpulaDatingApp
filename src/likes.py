@@ -2,7 +2,8 @@ from src.db import db
 from sqlalchemy.sql import text
 
 
-# other functions
+# like and match functions
+
 def insert_like(liker_id, likee_id):
     command = text(
         "INSERT INTO likes (liker_id, likee_id) VALUES (:liker_id, :likee_id)"
@@ -58,10 +59,3 @@ def get_match_usernames(username):
     users = result.fetchall()
     # print("Users", users)
     return users
-
-
-def get_field_id(fieldname):
-    result = db.session.execute(
-        text("SELECT id FROM studyfields WHERE field=:field"), {"field": fieldname}
-    )
-    return result.fetchone()[0]

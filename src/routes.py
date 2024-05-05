@@ -1,8 +1,9 @@
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import check_password_hash, generate_password_hash
-import src.sql_functions as fun
+import src.likes as likes
 import src.users as users
 import src.orientations as orientations
+import src.studyfields as studyfields
 import secrets
 from app import app
 
@@ -18,12 +19,12 @@ def profiles():
         username = session["username"]
         userdata = users.get_userdata_no_curr(username)
         user_id = users.get_username_id(username)
-        matches = fun.get_match_usernames(username)
+        matches = likes.get_match_usernames(username)
         matches = tuplelist_helper(matches)
         # print("matches now:", matches)
 
-        likes = fun.get_liked_usernames(user_id)
-        likes = tuplelist_helper(likes)
+        liked_list = likes.get_liked_usernames(user_id)
+        liked_list = tuplelist_helper(liked_list)
         # print("usersss,", users)
 
         userori = {}
@@ -37,7 +38,7 @@ def profiles():
             "profiles.html",
             count=len(userdata),
             users=userdata,
-            likes=likes,
+            likes=liked_list,
             matches=matches,
             orientations=userori,
         )
@@ -73,7 +74,7 @@ def sendlikes():
 def matches():
     if "username" in session:
         username = session["username"]
-        matchlist = fun.get_match_profiles(username)
+        matchlist = likes.get_match_profiles(username)
 
         userori = {}
         for u in matchlist:
@@ -145,7 +146,6 @@ def editorientations():
     orien_list = orientations.get_all_orientations()
     orien_list = tuplelist_helper(orien_list)
     username = session["username"]
-    user_id = users.get_username_id(username)
     user_orientations = orientations.get_user_orientations(username)
     user_orientations = tuplelist_helper(user_orientations)
     # print("oris", orientations)
@@ -169,6 +169,7 @@ def editorientations():
             if u:
                 add.append(ori)
 
+    user_id = users.get_username_id(username)
     for new in add:
         orientation_id = orientations.get_orientation_id(new)
         try:
@@ -222,7 +223,7 @@ def sendregister():
         return render_template("error.html", message="Username already exists")
     else:
         passw_hashed = generate_password_hash(passw)
-        field_id = fun.get_field_id(field)
+        field_id = studyfields.get_field_id(field)
         users.create_user(username, passw_hashed, name, field_id, bio)
 
     return redirect("/")
