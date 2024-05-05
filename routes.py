@@ -16,7 +16,7 @@ def profiles():
         username = session["username"]
         users = fun.find_userdata_no_curr(username)
         user_id = fun.find_session_id(username)
-        matches = fun.find_match_usernames(user_id)
+        matches = fun.find_match_usernames(username)
         matches = tuplelist_helper(matches)
         # print("matches now:", matches)
 
@@ -66,8 +66,7 @@ def sendlikes():
 def matches():
     if "username" in session:
         username = session["username"]
-        user_id = fun.find_session_id(username)
-        matchlist = fun.find_match_profiles(user_id)
+        matchlist = fun.find_match_profiles(username)
 
         userori = {}
         for u in matchlist:
@@ -126,8 +125,8 @@ def editprofile():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    user_id = fun.find_session_id(session["username"])
-    fun.edit_user(user_id, name, bio)
+    username = session["username"]
+    fun.edit_user(username, name, bio)
     return redirect("/profiles")
 
 

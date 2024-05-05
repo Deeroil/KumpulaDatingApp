@@ -83,9 +83,9 @@ def find_userdata_no_curr(username):
     return users
 
 
-def edit_user(user_id, name, bio):
-    sql = text("UPDATE users SET name=:name, bio=:bio WHERE id=:user_id")
-    db.session.execute(sql, {"name": name, "bio": bio, "user_id": user_id})
+def edit_user(username, name, bio):
+    sql = text("UPDATE users SET name=:name, bio=:bio WHERE username=:username")
+    db.session.execute(sql, {"name": name, "bio": bio, "username": username})
     db.session.commit()
 
 
@@ -111,36 +111,39 @@ def get_liked_usernames(liker_id):
     return users
 
 
-def find_match_profiles(user_id):
+def find_match_profiles(username):
     command = text(
-        """SELECT username, name, studyfields.field, bio FROM likes as A
-            LEFT JOIN users ON users.id = A.likee_id
-            LEFT JOIN studyfields ON studyfields.id = users.studyfield_id
+        """SELECT Y.username, Y.name, studyfields.field, Y.bio
+            FROM likes as A
+            LEFT JOIN users as X ON X.id = A.likee_id
+            LEFT JOIN users as Y ON Y.id = A.liker_id
+            LEFT JOIN studyfields ON studyfields.id = Y.studyfield_id
             LEFT JOIN likes as B ON A.liker_id = B.likee_id
             WHERE A.likee_id =  B.liker_id
                     AND A.likee_id != B.likee_id
-                    AND A.liker_id = :user_id
-            GROUP BY studyfields.field, name, bio, username
+                    AND X.username=:username
+            GROUP BY studyfields.field, Y.name, Y.bio, Y.username
         """
     )
-    result = db.session.execute(command, {"user_id": user_id})
+    result = db.session.execute(command, {"username": username})
     return result.fetchall()
 
 
-def find_match_usernames(user_id):
+def find_match_usernames(username):
     command = text(
-        """SELECT username FROM likes as A
-            LEFT JOIN users ON users.id = A.likee_id
+        """SELECT Y.username FROM likes as A
+            LEFT JOIN users as X ON X.id = A.likee_id
+            LEFT JOIN users as Y ON Y.id = A.liker_id
             LEFT JOIN likes as B ON A.liker_id = B.likee_id
             WHERE A.likee_id =  B.liker_id
                     AND A.likee_id != B.likee_id
-                    AND A.liker_id = :user_id
-            GROUP BY username
+                    AND X.username=:username
+            GROUP BY Y.username
         """
     )
-    result = db.session.execute(command, {"user_id": user_id})
+    result = db.session.execute(command, {"username": username})
     users = result.fetchall()
-    print("WOO", users)
+    # print("Users", users)
     return users
 
 
