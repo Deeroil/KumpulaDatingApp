@@ -1,6 +1,8 @@
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import check_password_hash, generate_password_hash
-import sql_functions as fun
+import src.sql_functions as fun
+import src.users as users
+import src.orientations as orientations
 import secrets
 from app import app
 
@@ -14,8 +16,8 @@ def index():
 def profiles():
     if "username" in session:
         username = session["username"]
-        users = fun.get_userdata_no_curr(username)
-        user_id = fun.get_username_id(username)
+        userdata = users.get_userdata_no_curr(username)
+        user_id = users.get_username_id(username)
         matches = fun.get_match_usernames(username)
         matches = tuplelist_helper(matches)
         # print("matches now:", matches)
@@ -25,16 +27,16 @@ def profiles():
         # print("usersss,", users)
 
         userori = {}
-        for u in users:
-            ori = fun.get_user_orientations(u.username)
+        for u in userdata:
+            ori = orientations.get_user_orientations(u.username)
             ori = tuplelist_helper(ori)
             userori[u.username] = ori
 
         print("userori", userori)
         return render_template(
             "profiles.html",
-            count=len(users),
-            users=users,
+            count=len(userdata),
+            users=userdata,
             likes=likes,
             matches=matches,
             orientations=userori,
@@ -45,15 +47,15 @@ def profiles():
 
 @app.route("/sendlikes", methods=["POST"])
 def sendlikes():
-    users = fun.get_usernames_ids()
+    users_list = users.get_usernames_ids()
     liked = []
-    for user in users:
+    for user in users_list:
         u = request.form.get(user.username)
         if u:
             liked.append(user.id)
 
     username = session["username"]
-    user_id = fun.get_username_id(username)
+    user_id = users.get_username_id(username)
 
     if len(liked) > 0:
         for likee_id in liked:
@@ -75,7 +77,7 @@ def matches():
 
         userori = {}
         for u in matchlist:
-            ori = fun.get_user_orientations(u.username)
+            ori = orientations.get_user_orientations(u.username)
             ori = tuplelist_helper(ori)
             userori[u.username] = ori
 
@@ -106,17 +108,17 @@ def tuplelist_helper(tuplelist):
 def edit():
     if "username" in session:
         username = session["username"]
-        user = fun.get_names_bios(username)
+        user = users.get_names_bios(username)
 
-        orientations = fun.get_user_orientations(username)
-        orientations = tuplelist_helper(orientations)
-        all_orientations = fun.get_all_orientations()
+        orien_list = orientations.get_user_orientations(username)
+        orien_list = tuplelist_helper(orien_list)
+        all_orientations = orientations.get_all_orientations()
         all_orientations = tuplelist_helper(all_orientations)
         # print("all:", all_orientations)
         # print("users", orientations)
 
         return render_template(
-            "edit.html", user=user, ori=orientations, all_orientations=all_orientations
+            "edit.html", user=user, ori=orien_list, all_orientations=all_orientations
         )
     else:
         return render_template("edit.html")
@@ -131,7 +133,7 @@ def editprofile():
         abort(403)
 
     username = session["username"]
-    fun.edit_user(username, name, bio)
+    users.edit_user(username, name, bio)
     return redirect("/profiles")
 
 
@@ -140,11 +142,11 @@ def editorientations():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    orientations = fun.get_all_orientations()
-    orientations = tuplelist_helper(orientations)
+    orien_list = orientations.get_all_orientations()
+    orien_list = tuplelist_helper(orien_list)
     username = session["username"]
-    user_id = fun.get_username_id(username)
-    user_orientations = fun.get_user_orientations(username)
+    user_id = users.get_username_id(username)
+    user_orientations = orientations.get_user_orientations(username)
     user_orientations = tuplelist_helper(user_orientations)
     # print("oris", orientations)
     # print("userori", user_orientations)
@@ -152,7 +154,7 @@ def editorientations():
     add = []
     remove = []
     if user_orientations:
-        for ori in orientations:
+        for ori in orien_list:
             u = request.form.get(ori)
             # print("u", u)
             if u and ori not in user_orientations:
@@ -162,23 +164,23 @@ def editorientations():
                 remove.append(ori)
     else:
         print("no orientations")
-        for ori in orientations:
+        for ori in orien_list:
             u = request.form.get(ori)
             if u:
                 add.append(ori)
 
     for new in add:
-        orientation_id = fun.get_orientation_id(new)
+        orientation_id = orientations.get_orientation_id(new)
         try:
-            fun.insert_user_orientation(user_id, orientation_id)
+            orientations.insert_user_orientation(user_id, orientation_id)
         except:
             return render_template(
                 "error.html", message="Invalid request. Orientation already added."
             )
 
     for deleted in remove:
-        orientation_id = fun.get_orientation_id(deleted)
-        fun.delete_orientation(user_id, orientation_id)
+        orientation_id = orientations.get_orientation_id(deleted)
+        orientations.delete_orientation(user_id, orientation_id)
 
     return redirect("/profiles")
 
@@ -214,14 +216,14 @@ def sendregister():
             "error.html", message="Profile text should be 3-200 characters long"
         )
 
-    user = fun.check_username_exists(username)
+    user = users.check_username_exists(username)
     if user:
         print("error: user exists")
         return render_template("error.html", message="Username already exists")
     else:
         passw_hashed = generate_password_hash(passw)
         field_id = fun.get_field_id(field)
-        fun.create_user(username, passw_hashed, name, field_id, bio)
+        users.create_user(username, passw_hashed, name, field_id, bio)
 
     return redirect("/")
 
@@ -235,7 +237,7 @@ def register():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    user = fun.get_ids_passws(username)
+    user = users.get_ids_passws(username)
 
     if not user:
         print("Error: invalid username")
