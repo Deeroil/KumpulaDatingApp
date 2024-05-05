@@ -1,7 +1,8 @@
 from db import db
 from sqlalchemy.sql import text
 
-# TODO: rename näitä selkeämmiksi
+# TODO: rename these a bit
+# TODO: split into multiple files
 
 
 # user functions

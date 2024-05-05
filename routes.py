@@ -140,7 +140,7 @@ def editorientations():
     orientations = tuplelist_helper(orientations)
     username = session["username"]
     user_id = fun.find_session_id(username)
-    user_orientations = fun.get_user_orientations(username)  # TODO: ???
+    user_orientations = fun.get_user_orientations(username)
     user_orientations = tuplelist_helper(user_orientations)
     # print("oris", orientations)
     # print("userori", user_orientations)
@@ -171,21 +171,11 @@ def editorientations():
         orientation_id = fun.get_orientation_id(deleted)
         fun.delete_orientation(user_id, orientation_id)
 
-    # print("Add, ", add)
-    # print("Remouv", remove)
-
     return redirect("/profiles")
 
 
-# TODO: check radiobox does it work without-- no.
 @app.route("/sendregister", methods=["POST"])
 def sendregister():
-    # TODO:
-    # -radio validation?
-    # - salasanan valdointi
-    # - kamalaa joutua täyttää uudestaan jos ei saa
-    #           luotua, mutta tehdään nyt näin
-
     username = request.form["username"]
     passw = request.form["passw"]
     name = request.form["name"]
@@ -195,7 +185,6 @@ def sendregister():
     if not username or not passw or not name or not field:
         return render_template("error.html", message="Missing information")
 
-    # TODO: näinkö?
     if not 2 < len(username) < 26:
         return render_template(
             "error.html", message="Username should be 3-25 characters long"
@@ -216,10 +205,7 @@ def sendregister():
             "error.html", message="Profile text should be 3-200 characters long"
         )
 
-    print("FIELD", field)
-    # haetaan usernamella ensin
     user = fun.find_username(username)
-
     if user:
         print("error: user exists")
         return render_template("error.html", message="Username already exists")
